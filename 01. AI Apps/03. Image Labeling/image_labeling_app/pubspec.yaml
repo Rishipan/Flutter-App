@@ -1,0 +1,38 @@
+name: image_labeling_app
+description: A new Flutter project.
+
+publish_to: 'none' 
+
+version: 1.0.0+1
+
+environment:
+  sdk: '>=2.19.6 <3.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  image_picker: ^1.0.0
+
+  cupertino_icons: ^1.0.2
+  google_mlkit_image_labeling: ^0.8.0
+  rename: ^2.1.1
+  flutter_launcher_icons: ^0.13.1
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^2.0.0
+
+flutter_icons: 
+  android: true
+  ios: false
+  image_path: "assets/images/imgLabeling_icon.png"
+
+
+
+flutter:
+  uses-material-design: true
+  assets:
+  - assets/images/imgLabeling_icon.png
+
+ 
