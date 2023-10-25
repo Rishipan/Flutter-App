@@ -51,10 +51,13 @@ class _TaskTileState extends State<TaskTile> {
         child: Container(
           padding: const EdgeInsets.all(24),
           decoration: BoxDecoration(
-            gradient: const LinearGradient(
+            gradient: LinearGradient(
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter,
-              colors: [Colors.orange, Colors.amber],
+              colors: [
+                Colors.orange.shade300,
+                Colors.amber.shade200,
+              ],
             ),
             borderRadius: BorderRadius.circular(12),
           ),

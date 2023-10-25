@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:todo_task/screens/home_screen.dart';
+import 'package:todo_task/screens/intro_screen/onboarding%20_screen.dart';
 
 void main() async {
   await Hive.initFlutter();
@@ -16,7 +16,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return const MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: HomeScreen(),
+      home: OnboardingScreen(),
     );
   }
 }

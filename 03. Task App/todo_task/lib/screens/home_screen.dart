@@ -38,6 +38,7 @@ class _HomeScreenState extends State<HomeScreen> {
     } else {
       dbc.loadDataComplete();
     }
+
     super.initState();
   }
 
@@ -176,38 +177,67 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     int cnto = dbo.ongoing.length;
     int cntc = dbc.complete.length;
+    double progress = 0;
     var oper = 0;
     var cper = 0;
+    if (cntc + cnto != 0) {
+      progress = cntc / (cnto + cntc);
+    }
     if (cntc != 0 || cnto != 0) {
       oper = (cnto / (cnto + cntc) * 100).round();
       cper = (cntc / (cnto + cntc) * 100).round();
     }
 
     return Scaffold(
-      backgroundColor: Colors.grey.shade100,
+      // backgroundColor: Colors.grey.shade100,
       appBar: AppBar(
-        backgroundColor: Colors.transparent,
+        automaticallyImplyLeading: false,
+        backgroundColor: Colors.orange.shade200,
         elevation: 0,
-        leading: Icon(
-          Icons.menu,
-          color: Colors.grey.shade600,
-        ),
-        actions: [
-          Padding(
-            padding: const EdgeInsets.only(right: 24),
-            child: GestureDetector(
-              child: const Icon(
-                Icons.person_outline,
-                color: Colors.black,
-              ),
+        toolbarHeight: 50,
+        // title: const Text(
+        //   'Task App',
+        //   style: TextStyle(
+        //     color: Colors.black,
+        //     fontWeight: FontWeight.bold,
+        //     fontSize: 24,
+        //   ),
+        // ),
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: const [
+                Icon(Icons.lightbulb_circle),
+                Icon(Icons.lightbulb_circle),
+                Icon(Icons.lightbulb_circle),
+              ],
             ),
-          ),
-        ],
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: const [
+                Icon(Icons.lightbulb_circle),
+                Icon(Icons.lightbulb_circle),
+                Icon(Icons.lightbulb_circle),
+              ],
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: const [
+                Icon(Icons.lightbulb_circle),
+                Icon(Icons.lightbulb_circle),
+                Icon(Icons.lightbulb_circle),
+              ],
+            ),
+          ],
+        ),
+        centerTitle: true,
       ),
       body: DefaultTabController(
         length: 2,
         child: Scaffold(
-          backgroundColor: Colors.grey.shade100,
+          backgroundColor: Colors.orange.shade200,
           appBar: AppBar(
             automaticallyImplyLeading: false,
             backgroundColor: Colors.transparent,
@@ -216,34 +246,67 @@ class _HomeScreenState extends State<HomeScreen> {
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Text(
-                  'Hello, Champ',
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 20,
-                  ),
-                ),
-                Text(
-                  '$cntc task completed ($cper%)',
-                  style: TextStyle(
-                    color: Colors.green.shade200,
-                    fontSize: 14,
-                  ),
-                ),
-                Text(
-                  '$cnto task pending ($oper%)',
-                  style: TextStyle(
-                    color: Colors.red.shade200,
-                    fontSize: 14,
-                  ),
-                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          '  $cntc task completed ($cper%)',
+                          style: TextStyle(
+                            color: Colors.green.shade600,
+                            fontSize: 14,
+                          ),
+                        ),
+                        const SizedBox(height: 8),
+                        Text(
+                          '  $cnto task pending ($oper%)',
+                          style: const TextStyle(
+                            color: Colors.red,
+                            fontSize: 14,
+                          ),
+                        ),
+                      ],
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(right: 60),
+                      child: SizedBox(
+                        height: 45,
+                        width: 45,
+                        child: Stack(
+                          fit: StackFit.expand,
+                          children: [
+                            CircularProgressIndicator(
+                                value: progress,
+                                strokeWidth: 8.0,
+                                backgroundColor: Colors.red,
+                                valueColor: const AlwaysStoppedAnimation<Color>(
+                                    Colors.green)),
+                            Center(
+                              child: Text(
+                                '${(progress * 100).toStringAsFixed(0)}%',
+                                style: const TextStyle(
+                                  fontSize: 10,
+                                  color: Colors.green,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
+                )
               ],
             ),
-            bottom: const TabBar(
+            bottom: TabBar(
               indicatorColor: Colors.orange,
-              labelColor: Colors.amber,
+              labelColor: Colors.orange.shade900,
               unselectedLabelColor: Colors.black,
-              tabs: [
+              tabs: const [
                 Tab(
                   text: 'Ongoing Task',
                 ),
@@ -253,50 +316,64 @@ class _HomeScreenState extends State<HomeScreen> {
               ],
             ),
           ),
-          body: TabBarView(
-            children: [
-              // Content of Tab 1
-              Center(
-                child: (cnto > 0)
-                    ? ListView.builder(
-                        itemCount: dbo.ongoing.length,
-                        itemBuilder: (context, index) {
-                          return TaskTile(
-                              taskTitle: dbo.ongoing[index][0],
-                              taskContent: dbo.ongoing[index][1],
-                              taskTime: dbo.ongoing[index][2],
-                              taskCompleted: dbo.ongoing[index][3],
+          body: Container(
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                colors: [
+                  Colors.orange.shade100,
+                  Colors.orange.shade50,
+                ],
+              ),
+            ),
+            child: TabBarView(
+              children: [
+                // Content of Tab 1
+                Center(
+                  child: (cnto > 0)
+                      ? ListView.builder(
+                          itemCount: dbo.ongoing.length,
+                          itemBuilder: (context, index) {
+                            return TaskTile(
+                                taskTitle: dbo.ongoing[index][0],
+                                taskContent: dbo.ongoing[index][1],
+                                taskTime: dbo.ongoing[index][2],
+                                taskCompleted: dbo.ongoing[index][3],
+                                onChanged: (value) =>
+                                    checkBoxChangedOngoing(value, index),
+                                deleteTask: (context) =>
+                                    deleteTaskOngoing(index),
+                                updateTask: (context) => taskUpdate(index));
+                          })
+                      : const Center(
+                          child: Text("No Task Yet"),
+                        ),
+                ),
+                // Content of Tab 2
+                Center(
+                  child: (cntc > 0)
+                      ? ListView.builder(
+                          itemCount: dbc.complete.length,
+                          itemBuilder: (context, index) {
+                            return TaskTile(
+                              taskTitle: dbc.complete[index][0],
+                              taskContent: dbc.complete[index][1],
+                              taskTime: dbc.complete[index][2],
+                              taskCompleted: dbc.complete[index][3],
                               onChanged: (value) =>
-                                  checkBoxChangedOngoing(value, index),
-                              deleteTask: (context) => deleteTaskOngoing(index),
-                              updateTask: (context) => taskUpdate(index));
-                        })
-                    : const Center(
-                        child: Text("No Task Yet"),
-                      ),
-              ),
-              // Content of Tab 2
-              Center(
-                child: (cntc > 0)
-                    ? ListView.builder(
-                        itemCount: dbc.complete.length,
-                        itemBuilder: (context, index) {
-                          return TaskTile(
-                            taskTitle: dbc.complete[index][0],
-                            taskContent: dbc.complete[index][1],
-                            taskTime: dbc.complete[index][2],
-                            taskCompleted: dbc.complete[index][3],
-                            onChanged: (value) =>
-                                checkBoxChangedComplete(value, index),
-                            deleteTask: (context) => deleteTaskComplete(index),
-                            updateTask: (context) => taskUpdate(index),
-                          );
-                        })
-                    : const Center(
-                        child: Text("No Task Yet"),
-                      ),
-              ),
-            ],
+                                  checkBoxChangedComplete(value, index),
+                              deleteTask: (context) =>
+                                  deleteTaskComplete(index),
+                              updateTask: (context) => taskUpdate(index),
+                            );
+                          })
+                      : const Center(
+                          child: Text("No Task Yet"),
+                        ),
+                ),
+              ],
+            ),
           ),
         ),
       ),

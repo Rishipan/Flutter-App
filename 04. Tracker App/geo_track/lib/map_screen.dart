@@ -7,7 +7,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
 
 class MapScreen extends StatefulWidget {
-  const MapScreen({super.key});
+  const MapScreen({Key? key}) : super(key: key);
 
   @override
   State<MapScreen> createState() => _MapScreenState();
@@ -20,7 +20,7 @@ class _MapScreenState extends State<MapScreen> {
       Completer<GoogleMapController>();
 
   static const LatLng _nit = LatLng(22.677036, 88.379375);
-  static const LatLng _agpStation = LatLng(22.681742, 88.385445);
+  // static const LatLng _agpStation = LatLng(22.681742, 88.385445);
 
   static const LatLng _barakpore = LatLng(22.7604210, 88.3702868);
   static const LatLng _hawrah = LatLng(22.5853517, 88.3423811);
@@ -52,22 +52,15 @@ class _MapScreenState extends State<MapScreen> {
                   _mapController.complete(controller)),
               initialCameraPosition: const CameraPosition(
                 target: _nit,
-                zoom: 13,
+                zoom: 14,
               ),
               markers: {
+                
                 Marker(
                   markerId: const MarkerId("_currentLocation"),
                   icon: BitmapDescriptor.defaultMarker,
                   position: _currentPosition!,
                 ),
-                // const Marker(
-                //     markerId: MarkerId("_sourceLocation"),
-                //     icon: BitmapDescriptor.defaultMarker,
-                //     position: _agpStation),
-                // const Marker(
-                //     markerId: MarkerId("_destinationLocation"),
-                //     icon: BitmapDescriptor.defaultMarker,
-                //     position: _nit),
                 const Marker(
                     markerId: MarkerId("_sourceLocation2"),
                     icon: BitmapDescriptor.defaultMarker,
@@ -157,5 +150,13 @@ class _MapScreenState extends State<MapScreen> {
     setState(() {
       polylines[id] = polyline;
     });
+  }
+
+  Future<BitmapDescriptor> getCustomMarkerIcon() async {
+    final ImageConfiguration config = createLocalImageConfiguration(context);
+    final BitmapDescriptor bitmapDescriptor =
+        await BitmapDescriptor.fromAssetImage(
+            config, 'assets/images/black_location.png');
+    return bitmapDescriptor;
   }
 }
